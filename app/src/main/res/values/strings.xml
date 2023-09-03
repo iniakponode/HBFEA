@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">HBFEA</string>
+    <string name="ModelReport">Model Report</string>
+    <string name="title_activity_user_feed_back">UserFeedBackActivity</string>
+</resources>
