@@ -34,10 +34,13 @@ fun FeedbackForm(token:String,
                  context:Context= LocalContext.current,
 //                 report: String,
                  selectedTextQantiRating:String,
-                 onSubmit: (String, Boolean, String) -> Unit,
+                 onSubmit: (String, Boolean, Boolean, String) -> Unit,
 
 ) {
-    val selectedOption= rememberSaveable{ mutableStateOf(false) }
+    val agree= rememberSaveable{ mutableStateOf(false) }
+    val change_b= rememberSaveable {
+        mutableStateOf(false)
+    }
     val feedbackText=rememberSaveable{ mutableStateOf("") }
     val showThankYouDialog=rememberSaveable{ mutableStateOf(false) }
 
@@ -51,39 +54,82 @@ fun FeedbackForm(token:String,
         Row(horizontalArrangement = Arrangement.SpaceEvenly,modifier = Modifier.padding(bottom = 8.dp)) {
 
                 RadioButton(
-                    selected = selectedOption.value,
-                    onClick = { selectedOption.value = true },
-                    modifier = Modifier.padding(end = 8.dp).align(Alignment.CenterVertically)
+                    selected = agree.value,
+                    onClick = { agree.value = true },
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .align(Alignment.CenterVertically)
                 )
 
                 Text(text = "Yes", modifier = Modifier.align(Alignment.CenterVertically))
 
 
         }
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .padding(bottom = 8.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .padding(bottom = 8.dp)) {
 
-                    RadioButton(
-                        selected = !selectedOption.value,
-                        onClick = { selectedOption.value = false },
-                        modifier = Modifier.padding(end = 8.dp).align(Alignment.CenterVertically)
-                    )
+                RadioButton(
+                    selected = !agree.value,
+                    onClick = { agree.value = false },
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .align(Alignment.CenterVertically)
+                )
 
-                    Text(text = "No",modifier = Modifier.align(Alignment.CenterVertically))
+                Text(text = "No",modifier = Modifier.align(Alignment.CenterVertically))
             }
+
+
+
+        Text(
+            text = "If you drive, can the report make you to be more careful with your selected factors when driving?",
+            fontWeight = FontWeight.SemiBold ,
+        )
+
+        Row(horizontalArrangement = Arrangement.SpaceEvenly,modifier = Modifier.padding(bottom = 8.dp)) {
+
+            RadioButton(
+                selected = change_b.value,
+                onClick = { change_b.value = true },
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .align(Alignment.CenterVertically)
+            )
+
+            Text(text = "Yes", modifier = Modifier.align(Alignment.CenterVertically))
+
+
+        }
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .padding(bottom = 8.dp)) {
+
+            RadioButton(
+                selected = !change_b.value,
+                onClick = { change_b.value = false },
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .align(Alignment.CenterVertically)
+            )
+
+            Text(text = "No",modifier = Modifier.align(Alignment.CenterVertically))
+        }
 
 
         Row(modifier = Modifier.padding(bottom = 8.dp)) {
 
             Text(
                 text = "Share your thoughts. " +
-                        "How could I improve the report presentation to influence driver behavior? " +
+                        "How can I improve the report presentation to influence driver behavior? " +
                         "Also, consider if any of your chosen factors might influence a driver to break speed limits. " +
                         "Anything else you'd like to add?",
                 style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(end = 8.dp).align(Alignment.CenterVertically)
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .align(Alignment.CenterVertically)
             )
         }
         Row(modifier = Modifier.padding(bottom = 8.dp)) {
@@ -102,8 +148,8 @@ fun FeedbackForm(token:String,
     Row(modifier = Modifier.padding(bottom = 8.dp)) {
         Button(
             onClick = {
-                if (selectedOption.value || feedbackText.value.isNotEmpty()) {
-                    onSubmit(selectedTextQantiRating,selectedOption.value, feedbackText.value)
+                if (agree.value ||change_b.value|| feedbackText.value.isNotEmpty()) {
+                    onSubmit(selectedTextQantiRating,agree.value,change_b.value, feedbackText.value)
                     showThankYouDialog.value = true
                 } else {
                     Toast.makeText(context,"Please Ensure all fields and radio buttons are filled and checked\n",Toast.LENGTH_LONG).show()

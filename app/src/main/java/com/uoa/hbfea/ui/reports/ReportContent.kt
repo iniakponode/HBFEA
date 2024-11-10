@@ -55,7 +55,7 @@ fun ReportContent(tok:String, selectedObjects: List<FeaturesModel>?) {
         Log.v("Generated",graphicalReport.value)
     }
 
-    Column(Modifier.padding(16.dp).verticalScroll(rememberScrollState())) {
+    Column(Modifier.padding(16.dp).verticalScroll(rememberScrollState()).fillMaxSize()) {
 
 //               UserFeedBackNavButton(token =token, quantitativeReport =qualitativeReport.value , qualitativeReport =qualitativeReport.value )
 //        // Summary Report Card
@@ -66,10 +66,10 @@ fun ReportContent(tok:String, selectedObjects: List<FeaturesModel>?) {
         ) {
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(8.dp)
                     .fillMaxWidth()
             ) {
-                Column(modifier = Modifier.padding(20.dp)) {
+                Column(modifier = Modifier.padding(8.dp).fillMaxSize()) {
                     Text(
                         text = "(My Summary Report for You.)",
                         modifier = Modifier

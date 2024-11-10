@@ -6,14 +6,18 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,14 +41,25 @@ fun UserResponseForm(token: String, Qualireport: String, Quatireport: String, se
     val coroutineScope = rememberCoroutineScope()
     val userRepositoryImpl = UserRepositoryImpl()
     val reportRepositoryImpl = ReportRepositoryImpl()
-    val selectedItemsRepoImpl=SelectedItemsRepoImpl()
+    val selectedItemsRepoImpl = SelectedItemsRepoImpl()
 
     val selectedTextQantiRating = rememberSaveable { mutableStateOf("") }
 
-    val selectUserType= rememberSaveable{mutableStateOf("")}
-    Column(Modifier.padding(5.dp)) {
+    val selectUserType = rememberSaveable { mutableStateOf("") }
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Transparent
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 2.dp
+        )
+    ) {
+    Column(Modifier.padding(15.dp)) {
         Text(
-            text = "Please give your FEEDBACK in the form, I really need it to improve!",
+            text = "Please give your FEEDBACK in this form, I really need it to improve!",
             fontWeight = FontWeight.Bold
         )
 
@@ -54,10 +69,14 @@ fun UserResponseForm(token: String, Qualireport: String, Quatireport: String, se
             modifier = Modifier.padding(vertical = 0.dp),
             fontWeight = FontWeight.W600
         )
-        val menuItems = rememberSaveable { listOf("Driver",
-                                            "FRSC Official",
-                                            "Police with Traffic experience",
-                                            "Driving Instructor")}
+        val menuItems = rememberSaveable {
+            listOf(
+                "Driver",
+                "FRSC Official",
+                "Police with Traffic experience",
+                "Driving Instructor"
+            )
+        }
 
         DropDownMenu(
             menuItems = menuItems,
@@ -68,7 +87,7 @@ fun UserResponseForm(token: String, Qualireport: String, Quatireport: String, se
         )
 
         Spacer(modifier = Modifier.height(5.dp))
-        val mItems = rememberSaveable{ listOf("Qualitative Report", "Quantitative Report")}
+        val mItems = rememberSaveable { listOf("Qualitative Report", "Quantitative Report") }
         Text(
             text = "What\'s your preferred report style, tap the arrow: ${selectedTextQantiRating.value}",
             modifier = Modifier.padding(vertical = 0.dp),
@@ -91,7 +110,7 @@ fun UserResponseForm(token: String, Qualireport: String, Quatireport: String, se
                 context = context,
 //                report = Qualireport + "\n" + Quatireport,
                 selectedTextQantiRating.value,
-            ) { selectedTextQantiRating,selectedOption, feedbackText ->
+            ) { selectedTextQantiRating, agree,change_b, feedbackText ->
 //                    requestWriteExternalStoragePermission(showThankYouDialog)
 
                 coroutineScope.launch {
@@ -116,7 +135,8 @@ fun UserResponseForm(token: String, Qualireport: String, Quatireport: String, se
                             quantitative = Quatireport,
                             selectedReport = selectedTextQantiRating,
                             comment = feedbackText,
-                            agree = selectedOption,
+                            agree = agree,
+                            change_b=change_b,
                             id = 0,
                             createdAt = "",
                             userId = user_id
@@ -124,22 +144,22 @@ fun UserResponseForm(token: String, Qualireport: String, Quatireport: String, se
                         Log.i("API Response", user_id.toString())
 
                         // Call the function to add the report
-                        val repId=addReport(
+                        val repId = addReport(
                             reportRepositoryImpl,
                             user_id,
                             newReportItem,
                             context = context
                         )
 
-                        if (repId>=1){
+                        if (repId >= 1) {
 //                            If report is added successfully, us that id to add the user selected items
-                            val selectedItems=SelectedOptionsItem(
-                                id=0,
+                            val selectedItems = SelectedOptionsItem(
+                                id = 0,
                                 reports_id = repId,
                                 select_opt = selectdItems
                             )
-                            Log.d("Selected Items",selectdItems)
-                            addSelectedItems(selectedItemsRepoImpl,selectedItems,repId,context)
+                            Log.d("Selected Items", selectdItems)
+                            addSelectedItems(selectedItemsRepoImpl, selectedItems, repId, context)
                         }
 
                     } else {
@@ -164,6 +184,7 @@ fun UserResponseForm(token: String, Qualireport: String, Quatireport: String, se
 //                showThankYouDialog = true
         }
     }
+}
 }
 
 private suspend fun addUser(

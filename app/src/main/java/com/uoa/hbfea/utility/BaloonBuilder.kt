@@ -49,7 +49,7 @@ class BaloonBuilder {
                                 "Influence: What could make a driver have a harsh braking event.\n" +
                                 "\nCoefficient: The score given to driving behaviors.\n" +
                                 "Higher score means more impact on harsh braking rate. \n" +
-                                "Confid. Interv.(Confidence Interval): The score range we are 95% sure contains the true score for the behaviors.\n" +
+                                "Conf. Int.(Confidence Interval): The score range we are 95% sure contains the true score for the behaviors.\n" +
                                 "p-value: Tells if the score is real or by chance.\nLower value (near 0.000) means we are very sure that the effect is real.",
                         textAlign = TextAlign.Justify,
                         fontWeight = FontWeight.W400,
@@ -65,7 +65,7 @@ class BaloonBuilder {
                     }
                 ) {
                     Text(
-                        text = "Tap to see what P-Value, Coefficient\n and Confid. Interv. mean",
+                        text = "Tap to see what P-Value, Coefficient\n and Conf. Int. mean",
                         color = Color.Black,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(start = 8.dp)

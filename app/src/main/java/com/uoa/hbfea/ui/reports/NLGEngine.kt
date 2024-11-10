@@ -73,23 +73,25 @@ class NLGEngine {
             influenceDescription: String
         ) {
             if (features.isNotEmpty()) {
-
                 for ((index, feature) in features.withIndex()) {
                     report.append(feature)
                     when (index) {
                         features.size - 1 -> {
-                            report.append("")
+                            // If it's the last feature, append the influence description
+                            report.append(" $influenceDescription")
                         }
                         features.size - 2 -> {
+                            // If it's the second-to-last feature, use "and" before the last feature
                             report.append(" and ")
                         }
                         else -> {
+                            // For other features, use a comma and space
                             report.append(", ")
                         }
                     }
                 }
-                report.append(influenceDescription)
             }
         }
+
     }
 }

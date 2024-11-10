@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName
 data class ReportItem(
     @SerializedName("agree")
     val agree: Boolean,
+    @SerializedName("change_b")
+    val change_b: Boolean,
     @SerializedName("comment")
     val comment: String,
     @SerializedName("created_at")
